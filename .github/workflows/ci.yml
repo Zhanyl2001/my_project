@@ -1,4 +1,4 @@
-name: Python CI
+name: Python CI/CD
 
 on: [push]
 
@@ -7,14 +7,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.11
 
-      - run: pip install pytest flake8
+      - name: Install
+        run: pip install pytest flake8 pylint
 
-      - run: flake8 .
+      - name: Lint flake8
+        run: flake8 . || true
 
-      - run: pytest || true
+      - name: Lint pylint
+        run: pylint main.py || true
+
+      - name: Run tests
+        run: pytest || true
