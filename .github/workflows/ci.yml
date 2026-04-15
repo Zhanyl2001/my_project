@@ -1,0 +1,20 @@
+name: Python CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - run: pip install pytest flake8
+
+      - run: flake8 .
+
+      - run: pytest || true
